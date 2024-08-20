@@ -1,0 +1,63 @@
+{% extends 'navigation.html' %}
+{% block body %}
+{% load static %}
+
+{% if error == "yes" %}
+<script>
+    alert('Logged in successfully');
+    window.location=('{% url 'home' %}');
+</script>
+{% endif %}
+{% if error == "not" %}
+<script>
+    alert('Username & Password are not Matching');
+</script>
+{% endif %}
+
+<style>
+.mybtnone:hover { background-color: #E40203; }
+</style>
+
+<div class="container">
+    <h2 style="margin-top:20px" align="center">User Login Form</h2><hr>
+
+    <div class="container-fluid" style="width:70%; margin-top:10%">
+        <form method="post" action="" id="loginForm">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" id="username" name="uname" placeholder="Enter Username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" name="pwd" placeholder="Password" required>
+            </div>
+            <button type="submit" class="btn btn-primary mybtnone">Login</button>
+            <button class="btn btn-primary mybtnone">
+                <a href="{% url 'signup' %}" style="color:white">Signup</a>
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+document.getElementById('loginForm').addEventListener('submit', function(event) {
+    var username = document.getElementById('username').value.trim();
+    var password = document.getElementById('password').value.trim();
+    var errors = [];
+
+    if (!username) {
+        errors.push('Username is required.');
+    }
+    if (!password) {
+        errors.push('Password is required.');
+    }
+
+    if (errors.length > 0) {
+        event.preventDefault(); // Prevent form submission
+        alert(errors.join('\n')); // Show error messages
+    }
+});
+</script>
+
+{% endblock %}
